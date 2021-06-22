@@ -18,9 +18,12 @@ func TestMD5(t *testing.T) {
 		fmt.Println(h.Err())
 	}
 
-	fmt.Println(string(h.Sum().ToHex()))
-	fmt.Println(string(h.Sum().ToHex().ToUpper()))
+	fmt.Println(string(h.Sum().ToHex()))           //计算sha1，转换hex编码
+	fmt.Println(string(h.Sum().ToHex().ToUpper())) //计算sha1，转换hex编码，大写hex编码
 
-	fmt.Println(string(h.Sum().ToHex().MD5().ToHex()))
+	fmt.Println(h.Sum().ToHex().ToString())           //计算sha1，转换hex编码，转换string类型
+	fmt.Println(h.Sum().ToHex().ToUpper().ToString()) //计算sha1，转换hex编码，大写hex编码，转换string类型
+
+	fmt.Println(string(h.Sum().ToHex().MD5().ToHex())) //计算sha1，转换hex编码，对hex编码求md5值，转换MD5值的hex
 	fmt.Println(string(h.Sum().ToHex().MD5().ToHex().ToUpper()))
 }

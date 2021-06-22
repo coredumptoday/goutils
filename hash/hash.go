@@ -12,6 +12,10 @@ import (
 
 type mds []byte
 
+func (b mds) ToString() string {
+	return string(b)
+}
+
 func (b mds) ToHex() mds {
 	h := make([]byte, hex.EncodedLen(len(b)))
 	n := hex.Encode(h, b)
