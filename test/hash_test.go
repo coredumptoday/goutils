@@ -26,4 +26,15 @@ func TestMD5(t *testing.T) {
 
 	fmt.Println(string(h.Sum().ToHex().MD5().ToHex())) //计算sha1，转换hex编码，对hex编码求md5值，转换MD5值的hex
 	fmt.Println(string(h.Sum().ToHex().MD5().ToHex().ToUpper()))
+
+	fmt.Println("=============")
+	fmt.Println(h.Sum().ToHex().ToString())
+	fmt.Println(h.Sum().ToHex().MD5().ToHex().ToString())
+	fmt.Println(h.Sum().ToHex().SHA1().ToHex().ToString())
+	fmt.Println(h.Sum().ToHex().SHA256().ToHex().ToString())
+	fmt.Println(h.Sum().ToHex().SHA256_224().ToHex().ToString())
+	fmt.Println(h.Sum().ToHex().SHA512_224().ToHex().ToString())
+	fmt.Println(h.Sum().ToHex().SHA512_256().ToHex().ToString())
+	fmt.Println(h.Sum().ToHex().SHA384().ToHex().ToString())
+	fmt.Println(h.Sum().ToHex().SHA512().ToHex().ToString())
 }

@@ -36,6 +36,36 @@ func (b mds) SHA1() mds {
 	return md[:]
 }
 
+func (b mds) SHA256_224() mds {
+	md := sha256.Sum224(b)
+	return md[:]
+}
+
+func (b mds) SHA256() mds {
+	md := sha256.Sum256(b)
+	return md[:]
+}
+
+func (b mds) SHA512_224() mds {
+	md := sha512.Sum512_224(b)
+	return md[:]
+}
+
+func (b mds) SHA512_256() mds {
+	md := sha512.Sum512_256(b)
+	return md[:]
+}
+
+func (b mds) SHA384() mds {
+	md := sha512.Sum384(b)
+	return md[:]
+}
+
+func (b mds) SHA512() mds {
+	md := sha512.Sum512(b)
+	return md[:]
+}
+
 func NewMD5() *xhash {
 	return &xhash{
 		h: md5.New(),
