@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"testing"
 
-	xhash "github.com/coredumptoday/goutils/sign"
+	"github.com/coredumptoday/goutils/sign"
 )
 
 func TestSHA1(t *testing.T) {
-	h := xhash.NewSHA1()
+	h := sign.NewSHA1()
 	h.WriteString("abc")
 	h.WriteString("def")
 	h.WriteString("hig")
@@ -23,7 +23,7 @@ func TestSHA1(t *testing.T) {
 }
 
 func TestMultiMessageDigest(t *testing.T) {
-	h := xhash.NewSHA1()
+	h := sign.NewSHA1()
 	h.WriteString("abc")
 	h.WriteString("def")
 	h.WriteString("hig")
