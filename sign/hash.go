@@ -1,64 +1,16 @@
 package sign
 
 import (
-	"crypto/md5"
-	"crypto/sha1"
-	"crypto/sha256"
-	"crypto/sha512"
+	"crypto/hmac"
+	"encoding/hex"
 	"hash"
+	"reflect"
 )
 
-func NewMD5() *xhash {
-	return &xhash{
-		h: md5.New(),
-	}
-}
-
-func NewSHA1() *xhash {
-	return &xhash{
-		h: sha1.New(),
-	}
-}
-
-func NewSHA256() *xhash {
-	return &xhash{
-		h: sha256.New(),
-	}
-}
-
-func NewSHA256_224() *xhash {
-	return &xhash{
-		h: sha256.New224(),
-	}
-}
-
-func NewSHA512_224() *xhash {
-	return &xhash{
-		h: sha512.New512_224(),
-	}
-}
-
-func NewSHA512_256() *xhash {
-	return &xhash{
-		h: sha512.New512_256(),
-	}
-}
-
-func NewSHA384() *xhash {
-	return &xhash{
-		h: sha512.New384(),
-	}
-}
-
-func NewSHA512() *xhash {
-	return &xhash{
-		h: sha512.New(),
-	}
-}
-
 type xhash struct {
-	h   hash.Hash
-	err error
+	h      hash.Hash
+	err    error
+	isHmac bool
 }
 
 func (xh *xhash) Err() error {
@@ -85,10 +37,33 @@ func (xh *xhash) WriteString(d string) int {
 	return n
 }
 
-func (xh *xhash) Sum() mds {
+func (xh *xhash) Sum() (mds, error) {
+	if xh.err != nil {
+		return nil, xh.err
+	}
+
+	return xh.h.Sum(nil), xh.err
+}
+
+func (xh *xhash) decodeHexString(str string) []byte {
 	if xh.err != nil {
 		return nil
 	}
 
-	return xh.h.Sum(nil)
+	b, err := hex.DecodeString(str)
+	xh.err = err
+	return b
+}
+
+func (xh *xhash) EqualHexString(str string) (bool, error) {
+	targetSum := xh.decodeHexString(str)
+	selfSum, _ := xh.Sum()
+	if xh.err != nil {
+		return false, xh.err
+	}
+
+	if xh.isHmac {
+		return hmac.Equal(selfSum, targetSum), xh.err
+	}
+	return reflect.DeepEqual(selfSum, targetSum), xh.err
 }
