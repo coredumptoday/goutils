@@ -4,10 +4,25 @@ import (
 	"fmt"
 	"testing"
 
-	xhash "github.com/coredumptoday/goutils/hash"
+	xhash "github.com/coredumptoday/goutils/sign"
 )
 
-func TestMD5(t *testing.T) {
+func TestSHA1(t *testing.T) {
+	h := xhash.NewSHA1()
+	h.WriteString("abc")
+	h.WriteString("def")
+	h.WriteString("hig")
+	h.WriteString("klm")
+
+	if h.Err() != nil {
+		fmt.Println(h.Err())
+	}
+
+	fmt.Println(string(h.Sum().ToHex()))           //计算sha1，转换hex编码
+	fmt.Println(string(h.Sum().ToHex().ToUpper())) //计算sha1，转换hex编码，大写hex编码
+}
+
+func TestMultiMessageDigest(t *testing.T) {
 	h := xhash.NewSHA1()
 	h.WriteString("abc")
 	h.WriteString("def")
