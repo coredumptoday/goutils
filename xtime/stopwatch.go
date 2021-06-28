@@ -1,11 +1,11 @@
-package timex
+package xtime
 
 import (
 	"errors"
 	"time"
 )
 
-var idxOutOfRange = errors.New("goutils/timex: GetDuration idx is out of range")
+var idxOutOfRange = errors.New("goutils/xtime: GetDuration idx is out of range")
 
 func IsIdxOutOfRangeErr(err error) bool {
 	return errors.Is(err, idxOutOfRange)
@@ -31,19 +31,16 @@ type stopwatch struct {
 	et []time.Duration
 }
 
-func (s *stopwatch) Stop() timeDev {
+func (s *stopwatch) Stop() Duration {
 	d := time.Since(s.st)
-	if len(s.et) < cap(s.et) {
-		s.et = append(s.et, d)
-	}
-
-	return timeDev(d)
+	s.et = append(s.et, d)
+	return Duration(d)
 }
 
-func (s *stopwatch) GetDuration(idx int) (timeDev, error) {
+func (s *stopwatch) GetDuration(idx int) (Duration, error) {
 	if idx < 0 || idx >= len(s.et) {
 		return 0, idxOutOfRange
 	}
 
-	return timeDev(s.et[idx]), nil
+	return Duration(s.et[idx]), nil
 }
