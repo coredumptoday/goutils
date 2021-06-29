@@ -5,6 +5,8 @@ import (
 	"encoding/hex"
 	"hash"
 	"reflect"
+
+	"github.com/coredumptoday/goutils/xtype"
 )
 
 type xhash struct {
@@ -37,7 +39,7 @@ func (xh *xhash) WriteString(d string) int {
 	return n
 }
 
-func (xh *xhash) Sum() (mds, error) {
+func (xh *xhash) Sum() (xtype.XBS, error) {
 	if xh.err != nil {
 		return nil, xh.err
 	}

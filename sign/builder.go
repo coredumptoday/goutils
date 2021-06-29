@@ -3,6 +3,8 @@ package sign
 import (
 	"net/url"
 	"sort"
+
+	"github.com/coredumptoday/goutils/xtype"
 )
 
 const extendKeyDefaultCap = 5
@@ -170,7 +172,7 @@ func (b *builder) write() {
 	}
 }
 
-func (b *builder) Sign() (mds, error) {
+func (b *builder) Sign() (xtype.XBS, error) {
 	b.write()
 	return b.h.Sum()
 }
@@ -180,7 +182,7 @@ func (b *builder) EqualHexString(str string) (bool, error) {
 	return b.h.EqualHexString(str)
 }
 
-func (b *builder) SignWithPostfixStr(strs ...string) (mds, error) {
+func (b *builder) SignWithPostfixStr(strs ...string) (xtype.XBS, error) {
 	b.write()
 
 	for _, s := range strs {
@@ -190,7 +192,7 @@ func (b *builder) SignWithPostfixStr(strs ...string) (mds, error) {
 	return b.h.Sum()
 }
 
-func (b *builder) SignWithPostfixByte(ba ...[]byte) (mds, error) {
+func (b *builder) SignWithPostfixByte(ba ...[]byte) (xtype.XBS, error) {
 	b.write()
 
 	for _, s := range ba {
