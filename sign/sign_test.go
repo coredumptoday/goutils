@@ -12,8 +12,8 @@ import (
 //一次性输入进行hash计算
 func TestMds(t *testing.T) {
 	ob := xtype.XBS("abcdefghijklmn")
-	fmt.Println(ob.MD5().ToHex().ToString())                //计算md5
-	fmt.Println(ob.SHA1().ToHex().MD5().ToHex().ToString()) //计算md5(sha1(str))
+	fmt.Println(ob.MD5().HexEncode().ToString())                    //计算md5
+	fmt.Println(ob.SHA1().HexEncode().MD5().HexEncode().ToString()) //计算md5(sha1(str))
 }
 
 //多次拼接数据进行hash计算
@@ -30,7 +30,7 @@ func TestSHA1Sign(t *testing.T) {
 		fmt.Println(err)
 	}
 
-	fmt.Println(sha1Sum.ToHex().ToString()) //sha1(abcdefhigklm)
+	fmt.Println(sha1Sum.HexEncode().ToString()) //sha1(abcdefhigklm)
 }
 
 /**
@@ -52,7 +52,7 @@ func TestMD5SignFromQuery(t *testing.T) {
 		fmt.Println(err)
 	}
 
-	fmt.Println(md5Sum.ToHex().ToString())
+	fmt.Println(md5Sum.HexEncode().ToString())
 }
 
 /**
@@ -78,5 +78,5 @@ func TestMD5SignFromMap(t *testing.T) {
 		fmt.Println(err)
 	}
 
-	fmt.Println(md5Sum.ToHex().ToString())
+	fmt.Println(md5Sum.HexEncode().ToString())
 }

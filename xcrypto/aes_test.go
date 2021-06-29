@@ -5,21 +5,21 @@ import (
 	"testing"
 )
 
-var key = []byte("abcdabcdabcdabcd")
-var iv = []byte("defgdefgdefgdefg")
-var data = []byte("AES,高级加密标准（英语：Advanced Encryption Standard，缩写：AES），在密码学中又称Rijndael加密法，是美国联邦政府采用的一种区块加密标准。这个标准用来替代原先的DES，已经被多方分析且广为全世界所使用。严格地说，AES和Rijndael加密法并不完全一样（虽然在实际应用中二者可以互换），因为Rijndael加密法可以支持更大范围的区块和密钥长度：AES的区块长度固定为128 比特，密钥长度则可以是128，192或256比特；而Rijndael使用的密钥和区块长度可以是32位的整数倍，以128位为下限，256比特为上限。包括AES-ECB,AES-CBC,AES-CTR,AES-OFB,AES-CFB")
+var aesKey = []byte("abcdabcdabcdabcd")
+var aesIv = []byte("defgdefgdefgdefg")
+var aesData = []byte("AES,高级加密标准（英语：Advanced Encryption Standard，缩写：AES），在密码学中又称Rijndael加密法，是美国联邦政府采用的一种区块加密标准。这个标准用来替代原先的DES，已经被多方分析且广为全世界所使用。严格地说，AES和Rijndael加密法并不完全一样（虽然在实际应用中二者可以互换），因为Rijndael加密法可以支持更大范围的区块和密钥长度：AES的区块长度固定为128 比特，密钥长度则可以是128，192或256比特；而Rijndael使用的密钥和区块长度可以是32位的整数倍，以128位为下限，256比特为上限。包括AES-ECB,AES-CBC,AES-CTR,AES-OFB,AES-CFB")
 
 func TestAesECB(t *testing.T) {
-	ae := NewAesEncipher(key)
-	endata, err := ae.ECB().SetPadding(PKCS5).Do(data)
+	ae := NewAesEncipher(aesKey)
+	endata, err := ae.ECB().SetPadding(PKCS5).Do(aesData)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(endata.ToHex().ToString())
-	fmt.Println(endata.ToStdBase64().ToString())
-	fmt.Println(endata.ToUrlBase64().ToString())
+	fmt.Println(endata.HexEncode().ToString())
+	fmt.Println(endata.StdBase64Encode().ToString())
+	fmt.Println(endata.URLBase64Encode().ToString())
 
-	ad := NewAesDecipher(key)
+	ad := NewAesDecipher(aesKey)
 	origin, err := ad.ECB().SetPadding(PKCS5).Do(endata)
 	if err != nil {
 		fmt.Println(err)
@@ -28,17 +28,17 @@ func TestAesECB(t *testing.T) {
 }
 
 func TestAesCBC(t *testing.T) {
-	ae := NewAesEncipher(key)
-	endata, err := ae.CBC(iv).SetPadding(PKCS5).Do(data)
+	ae := NewAesEncipher(aesKey)
+	endata, err := ae.CBC(aesIv).SetPadding(PKCS5).Do(aesData)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(endata.ToHex().ToString())
-	fmt.Println(endata.ToStdBase64().ToString())
-	fmt.Println(endata.ToUrlBase64().ToString())
+	fmt.Println(endata.HexEncode().ToString())
+	fmt.Println(endata.StdBase64Encode().ToString())
+	fmt.Println(endata.URLBase64Encode().ToString())
 
-	ad := NewAesDecipher(key)
-	origin, err := ad.CBC(iv).SetPadding(PKCS5).Do(endata)
+	ad := NewAesDecipher(aesKey)
+	origin, err := ad.CBC(aesIv).SetPadding(PKCS5).Do(endata)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -46,17 +46,17 @@ func TestAesCBC(t *testing.T) {
 }
 
 func TestAesCTR(t *testing.T) {
-	ae := NewAesEncipher(key)
-	endata, err := ae.CTR(iv).SetPadding(PKCS5).Do(data)
+	ae := NewAesEncipher(aesKey)
+	endata, err := ae.CTR(aesIv).SetPadding(PKCS5).Do(aesData)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(endata.ToHex().ToString())
-	fmt.Println(endata.ToStdBase64().ToString())
-	fmt.Println(endata.ToUrlBase64().ToString())
+	fmt.Println(endata.HexEncode().ToString())
+	fmt.Println(endata.StdBase64Encode().ToString())
+	fmt.Println(endata.URLBase64Encode().ToString())
 
-	ad := NewAesDecipher(key)
-	origin, err := ad.CTR(iv).Do(endata)
+	ad := NewAesDecipher(aesKey)
+	origin, err := ad.CTR(aesIv).Do(endata)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -64,17 +64,17 @@ func TestAesCTR(t *testing.T) {
 }
 
 func TestAesOFB(t *testing.T) {
-	ae := NewAesEncipher(key)
-	endata, err := ae.OFB(iv).SetPadding(PKCS5).Do(data)
+	ae := NewAesEncipher(aesKey)
+	endata, err := ae.OFB(aesIv).SetPadding(PKCS5).Do(aesData)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(endata.ToHex().ToString())
-	fmt.Println(endata.ToStdBase64().ToString())
-	fmt.Println(endata.ToUrlBase64().ToString())
+	fmt.Println(endata.HexEncode().ToString())
+	fmt.Println(endata.StdBase64Encode().ToString())
+	fmt.Println(endata.URLBase64Encode().ToString())
 
-	ad := NewAesDecipher(key)
-	origin, err := ad.OFB(iv).Do(endata)
+	ad := NewAesDecipher(aesKey)
+	origin, err := ad.OFB(aesIv).Do(endata)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -82,17 +82,17 @@ func TestAesOFB(t *testing.T) {
 }
 
 func TestAesCFB(t *testing.T) {
-	ae := NewAesEncipher(key)
-	endata, err := ae.CFB(iv).SetPadding(PKCS5).Do(data)
+	ae := NewAesEncipher(aesKey)
+	endata, err := ae.CFB(aesIv).SetPadding(PKCS5).Do(aesData)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(endata.ToHex().ToString())
-	fmt.Println(endata.ToStdBase64().ToString())
-	fmt.Println(endata.ToUrlBase64().ToString())
+	fmt.Println(endata.HexEncode().ToString())
+	fmt.Println(endata.StdBase64Encode().ToString())
+	fmt.Println(endata.StdBase64Encode().ToString())
 
-	ad := NewAesDecipher(key)
-	origin, err := ad.CFB(iv).Do(endata)
+	ad := NewAesDecipher(aesKey)
+	origin, err := ad.CFB(aesIv).Do(endata)
 	if err != nil {
 		fmt.Println(err)
 	}
