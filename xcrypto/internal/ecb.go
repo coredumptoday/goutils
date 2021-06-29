@@ -44,10 +44,10 @@ func (x *ecbDecipher) BlockSize() int { return x.blockSize }
 
 func (x *ecbDecipher) CryptBlocks(dst, src []byte) {
 	if len(src)%x.blockSize != 0 {
-		panic("crypto/cipher: input not full blocks")
+		panic("xcrypto/cipher: input not full blocks")
 	}
 	if len(dst) < len(src) {
-		panic("crypto/cipher: output smaller than input")
+		panic("xcrypto/cipher: output smaller than input")
 	}
 
 	l := len(src)

@@ -1,7 +1,6 @@
 package xcrypto
 
 import (
-	"crypto/aes"
 	"crypto/des"
 )
 
@@ -32,7 +31,7 @@ func NewDesEncipher(key []byte) *xCipher {
 }
 
 func NewDesEncipherWithKeyCheck(key []byte) (*xCipher, error) {
-	c, e := aes.NewCipher(key)
+	c, e := des.NewCipher(key)
 	return &xCipher{
 		block:     c,
 		err:       e,
@@ -53,7 +52,7 @@ func NewDesDecipher(key []byte) *xCipher {
 }
 
 func NewDesDecipherWithKeyCheck(key []byte) (*xCipher, error) {
-	c, e := aes.NewCipher(key)
+	c, e := des.NewCipher(key)
 	return &xCipher{
 		block:     c,
 		err:       e,
