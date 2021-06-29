@@ -125,19 +125,19 @@ func (c *xCipher) Do(data []byte) (xtype.XBS, error) {
 		data = c.pad.padding(data, c.block.BlockSize())
 	}
 
-	newData := make([]byte, len(data))
+	dst := make([]byte, len(data))
 
 	if c.isModel && c.model != nil {
-		c.model.CryptBlocks(newData, data)
+		c.model.CryptBlocks(dst, data)
 	} else if !c.isModel && c.stream != nil {
-		c.stream.XORKeyStream(newData, data)
+		c.stream.XORKeyStream(dst, data)
 	} else {
 		c.err = ErrModelErr
 	}
 
 	if !c.isEncrypt {
-		data = c.pad.unpadding(newData)
+		dst = c.pad.unpadding(dst)
 	}
 
-	return newData, c.err
+	return dst, c.err
 }

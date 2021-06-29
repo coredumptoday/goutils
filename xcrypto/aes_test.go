@@ -11,7 +11,7 @@ var aesData = []byte("AES,高级加密标准（英语：Advanced Encryption Stan
 
 func TestAesECB(t *testing.T) {
 	ae := NewAesEncipher(aesKey)
-	endata, err := ae.ECB().SetPadding(PKCS5).Do(aesData)
+	endata, err := ae.ECB().SetPadding(ZEROPADDING).Do(aesData)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -20,7 +20,7 @@ func TestAesECB(t *testing.T) {
 	fmt.Println(endata.URLBase64Encode().ToString())
 
 	ad := NewAesDecipher(aesKey)
-	origin, err := ad.ECB().SetPadding(PKCS5).Do(endata)
+	origin, err := ad.ECB().SetPadding(ZEROPADDING).Do(endata)
 	if err != nil {
 		fmt.Println(err)
 	}

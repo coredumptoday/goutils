@@ -42,6 +42,27 @@ func (p pkcs7) unpadding(data []byte) []byte {
 	return data[:(length - unpadding)]
 }
 
+type zero struct{}
+
+func (z zero) padding(data []byte, blockSize int) []byte {
+	padding := blockSize - len(data)%blockSize
+	if padding == 0 {
+		return data
+	} else {
+		padText := bytes.Repeat([]byte{0}, padding)
+		return append(data, padText...)
+	}
+}
+func (z zero) unpadding(data []byte) []byte {
+	for i := len(data) - 1; i >= 0; i-- {
+		if data[i] != 0 {
+			return data[:i+1]
+		}
+	}
+	return data
+}
+
 var NOPADDING = nopadding{}
 var PKCS5 = pkcs5{}
 var PKCS7 = pkcs7{}
+var ZEROPADDING = zero{}

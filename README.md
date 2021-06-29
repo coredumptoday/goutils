@@ -9,6 +9,7 @@
 ## xcrypto
 支持加密方法：AES-128、AES-192、AES-256、DES、3DES
 支持链接模式：ECB、CFB、OFB、CTR、CBC
+支持填充模式：pkcs7、pkcs5、zero、无填充
 
 ## sign
 构造接口签名，支持md5、sha1、sha2、hmac算法，支持根据url请求拆分参数，排序拼接等操作
