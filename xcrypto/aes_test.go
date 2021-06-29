@@ -65,7 +65,7 @@ func TestAesCTR(t *testing.T) {
 
 func TestAesOFB(t *testing.T) {
 	ae := NewAesEncipher(aesKey)
-	endata, err := ae.OFB(aesIv).SetPadding(PKCS5).Do(aesData)
+	endata, err := ae.OFB(aesIv).Do(aesData)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -83,7 +83,7 @@ func TestAesOFB(t *testing.T) {
 
 func TestAesCFB(t *testing.T) {
 	ae := NewAesEncipher(aesKey)
-	endata, err := ae.CFB(aesIv).SetPadding(PKCS5).Do(aesData)
+	endata, err := ae.CFB(aesIv).SetPadding(ZEROPADDING).Do(aesData)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -92,7 +92,25 @@ func TestAesCFB(t *testing.T) {
 	fmt.Println(endata.StdBase64Encode().ToString())
 
 	ad := NewAesDecipher(aesKey)
-	origin, err := ad.CFB(aesIv).Do(endata)
+	origin, err := ad.CFB(aesIv).SetPadding(ZEROPADDING).Do(endata)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(origin.ToString())
+}
+
+func TestAesCFB8(t *testing.T) {
+	ae := NewAesEncipher(aesKey)
+	endata, err := ae.CFB8(aesIv).Do(aesData)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(endata.HexEncode().ToString())
+	fmt.Println(endata.StdBase64Encode().ToString())
+	fmt.Println(endata.StdBase64Encode().ToString())
+
+	ad := NewAesDecipher(aesKey)
+	origin, err := ad.CFB8(aesIv).Do(endata)
 	if err != nil {
 		fmt.Println(err)
 	}

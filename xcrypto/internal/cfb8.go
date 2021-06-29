@@ -5,56 +5,66 @@ import (
 )
 
 type cfb8 struct {
-	b         cipher.Block
-	next      []byte
-	out       []byte
-	blockSize int
-
+	b       cipher.Block
+	sr      []byte
+	srEnc   []byte
+	srPos   int
 	decrypt bool
 }
 
-func (x *cfb8) XORKeyStream(dst, src []byte) {
-	if len(dst) < len(src) {
-		panic("crypto/cipher: output smaller than input")
-	}
-
-	for i, _ := range src {
-		x.b.Encrypt(x.out, x.next)
-		copy(x.next[:x.blockSize-1], x.out[1:])
-		if x.decrypt {
-			x.next[x.blockSize-1] = src[i]
-		}
-
-		dst[i] = src[i] ^ x.out[0]
-
-		if !x.decrypt {
-			x.next[x.blockSize-1] = dst[i]
-		}
-	}
-}
-
 func NewCFB8Encrypter(block cipher.Block, iv []byte) cipher.Stream {
+	if len(iv) != block.BlockSize() {
+		panic("cfb8.NewEncrypter: IV length must equal block size")
+	}
 	return newCFB8(block, iv, false)
 }
 
-func NewCFB8Decrypter(block cipher.Block, iv []byte) cipher.Stream {
+func NewCFBDecrypter(block cipher.Block, iv []byte) cipher.Stream {
+	if len(iv) != block.BlockSize() {
+		panic("cfb8.NewEncrypter: IV length must equal block size")
+	}
 	return newCFB8(block, iv, true)
 }
 
 func newCFB8(block cipher.Block, iv []byte, decrypt bool) cipher.Stream {
 	blockSize := block.BlockSize()
 	if len(iv) != blockSize {
-		// stack trace will indicate whether it was de or encryption
-		panic("cipher.newCFB: IV length must equal block size")
+		return nil
 	}
+
 	x := &cfb8{
-		b:         block,
-		out:       make([]byte, blockSize),
-		next:      make([]byte, blockSize),
-		blockSize: blockSize,
-		decrypt:   decrypt,
+		b:       block,
+		sr:      make([]byte, blockSize*4),
+		srEnc:   make([]byte, blockSize),
+		srPos:   0,
+		decrypt: decrypt,
 	}
-	copy(x.next, iv)
+	copy(x.sr, iv)
 
 	return x
+}
+
+func (x *cfb8) XORKeyStream(dst, src []byte) {
+	blockSize := x.b.BlockSize()
+
+	for i := 0; i < len(src); i++ {
+		x.b.Encrypt(x.srEnc, x.sr[x.srPos:x.srPos+blockSize])
+
+		var c byte
+		if x.decrypt {
+			c = src[i]
+			dst[i] = c ^ x.srEnc[0]
+		} else {
+			c = src[i] ^ x.srEnc[0]
+			dst[i] = c
+		}
+
+		x.sr[x.srPos+blockSize] = c
+		x.srPos++
+
+		if x.srPos+blockSize == len(x.sr) {
+			copy(x.sr, x.sr[x.srPos:])
+			x.srPos = 0
+		}
+	}
 }

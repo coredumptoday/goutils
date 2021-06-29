@@ -99,6 +99,22 @@ func (c *xCipher) OFB(iv []byte) *xCipher {
 	return c
 }
 
+func (c *xCipher) CFB8(iv []byte) *xCipher {
+	c.checkIV(iv)
+	if c.err != nil {
+		return c
+	}
+
+	if c.isEncrypt {
+		c.stream = internal.NewCFB8Encrypter(c.block, iv)
+	} else {
+		c.stream = internal.NewCFBDecrypter(c.block, iv)
+	}
+	c.isModel = false
+
+	return c
+}
+
 func (c *xCipher) SetPadding(p padding) *xCipher {
 	if c.err != nil {
 		return c
