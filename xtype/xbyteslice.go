@@ -2,12 +2,14 @@ package xtype
 
 import (
 	"bytes"
+	"crypto/hmac"
 	"crypto/md5"
 	"crypto/sha1"
 	"crypto/sha256"
 	"crypto/sha512"
 	"encoding/base64"
 	"encoding/hex"
+	"hash"
 )
 
 type XBS []byte
@@ -50,6 +52,12 @@ func (x XBS) SHA384() XBS {
 func (x XBS) SHA512() XBS {
 	md := sha512.Sum512(x)
 	return md[:]
+}
+
+func (x XBS) HMAC(hn func() hash.Hash, k []byte) XBS {
+	hm := hmac.New(hn, k)
+	hm.Write(x)
+	return hm.Sum(nil)
 }
 
 func (x XBS) ToString() string {

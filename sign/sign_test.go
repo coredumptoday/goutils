@@ -5,16 +5,7 @@ import (
 	"fmt"
 	"net/url"
 	"testing"
-
-	"github.com/coredumptoday/goutils/xtype"
 )
-
-//一次性输入进行hash计算
-func TestMds(t *testing.T) {
-	ob := xtype.XBS("abcdefghijklmn")
-	fmt.Println(ob.MD5().HexEncode().ToString())                    //计算md5
-	fmt.Println(ob.SHA1().HexEncode().MD5().HexEncode().ToString()) //计算md5(sha1(str))
-}
 
 //多次拼接数据进行hash计算
 func TestSHA1Sign(t *testing.T) {
