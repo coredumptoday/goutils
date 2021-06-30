@@ -1,8 +1,10 @@
-package xcrypto
+package crypto
 
 import (
 	"fmt"
 	"testing"
+
+	"github.com/coredumptoday/goutils/bytes"
 )
 
 var aesKey = []byte("abcdabcdabcdabcd")
@@ -15,16 +17,14 @@ func TestAesECB(t *testing.T) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(endata.HexEncode().ToString())
-	fmt.Println(endata.StdBase64Encode().ToString())
-	fmt.Println(endata.URLBase64Encode().ToString())
+	fmt.Println(bytes.Bytes(endata).HexEncode().ToString())
 
 	ad := NewAesDecipher(aesKey)
 	origin, err := ad.ECB().SetPadding(ZEROPADDING).Do(endata)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(origin.ToString())
+	fmt.Println(bytes.Bytes(origin).ToString())
 }
 
 func TestAesCBC(t *testing.T) {
@@ -33,16 +33,14 @@ func TestAesCBC(t *testing.T) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(endata.HexEncode().ToString())
-	fmt.Println(endata.StdBase64Encode().ToString())
-	fmt.Println(endata.URLBase64Encode().ToString())
+	fmt.Println(bytes.Bytes(endata).HexEncode().ToString())
 
 	ad := NewAesDecipher(aesKey)
 	origin, err := ad.CBC(aesIv).SetPadding(PKCS5).Do(endata)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(origin.ToString())
+	fmt.Println(bytes.Bytes(origin).ToString())
 }
 
 func TestAesCTR(t *testing.T) {
@@ -51,16 +49,14 @@ func TestAesCTR(t *testing.T) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(endata.HexEncode().ToString())
-	fmt.Println(endata.StdBase64Encode().ToString())
-	fmt.Println(endata.URLBase64Encode().ToString())
+	fmt.Println(bytes.Bytes(endata).HexEncode().ToString())
 
 	ad := NewAesDecipher(aesKey)
 	origin, err := ad.CTR(aesIv).Do(endata)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(origin.ToString())
+	fmt.Println(bytes.Bytes(origin).ToString())
 }
 
 func TestAesOFB(t *testing.T) {
@@ -69,16 +65,14 @@ func TestAesOFB(t *testing.T) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(endata.HexEncode().ToString())
-	fmt.Println(endata.StdBase64Encode().ToString())
-	fmt.Println(endata.URLBase64Encode().ToString())
+	fmt.Println(bytes.Bytes(endata).HexEncode().ToString())
 
 	ad := NewAesDecipher(aesKey)
 	origin, err := ad.OFB(aesIv).Do(endata)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(origin.ToString())
+	fmt.Println(bytes.Bytes(origin).ToString())
 }
 
 func TestAesCFB(t *testing.T) {
@@ -87,16 +81,14 @@ func TestAesCFB(t *testing.T) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(endata.HexEncode().ToString())
-	fmt.Println(endata.StdBase64Encode().ToString())
-	fmt.Println(endata.StdBase64Encode().ToString())
+	fmt.Println(bytes.Bytes(endata).HexEncode().ToString())
 
 	ad := NewAesDecipher(aesKey)
 	origin, err := ad.CFB(aesIv).SetPadding(ZEROPADDING).Do(endata)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(origin.ToString())
+	fmt.Println(bytes.Bytes(origin).ToString())
 }
 
 func TestAesCFB8(t *testing.T) {
@@ -105,14 +97,12 @@ func TestAesCFB8(t *testing.T) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(endata.HexEncode().ToString())
-	fmt.Println(endata.StdBase64Encode().ToString())
-	fmt.Println(endata.StdBase64Encode().ToString())
+	fmt.Println(bytes.Bytes(endata).HexEncode().ToString())
 
 	ad := NewAesDecipher(aesKey)
 	origin, err := ad.CFB8(aesIv).Do(endata)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(origin.ToString())
+	fmt.Println(bytes.Bytes(origin).ToString())
 }

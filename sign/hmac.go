@@ -1,65 +1,37 @@
 package sign
 
 import (
-	"crypto/hmac"
-	"crypto/md5"
-	"crypto/sha1"
-	"crypto/sha256"
-	"crypto/sha512"
+	"crypto"
 )
 
-func NewHmacMD5(key []byte) *xhash {
-	return &xhash{
-		h:      hmac.New(md5.New, key),
-		isHmac: true,
-	}
+func NewHmacMD5(key []byte) *signature {
+	return newSignature(crypto.MD5, key)
 }
 
-func NewHmacSHA1(key []byte) *xhash {
-	return &xhash{
-		h:      hmac.New(sha1.New, key),
-		isHmac: true,
-	}
+func NewHmacSHA1(key []byte) *signature {
+	return newSignature(crypto.SHA1, key)
 }
 
-func NewHmacSHA256(key []byte) *xhash {
-	return &xhash{
-		h:      hmac.New(sha256.New, key),
-		isHmac: true,
-	}
+func NewHmacSHA256(key []byte) *signature {
+	return newSignature(crypto.SHA256, key)
 }
 
-func NewHmacSHA256_224(key []byte) *xhash {
-	return &xhash{
-		h:      hmac.New(sha256.New224, key),
-		isHmac: true,
-	}
+func NewHmacSHA256_224(key []byte) *signature {
+	return newSignature(crypto.SHA224, key)
 }
 
-func NewHmacSHA512_224(key []byte) *xhash {
-	return &xhash{
-		h:      hmac.New(sha512.New512_224, key),
-		isHmac: true,
-	}
+func NewHmacSHA512_224(key []byte) *signature {
+	return newSignature(crypto.SHA512_224, key)
 }
 
-func NewHmacSHA512_256(key []byte) *xhash {
-	return &xhash{
-		h:      hmac.New(sha512.New512_256, key),
-		isHmac: true,
-	}
+func NewHmacSHA512_256(key []byte) *signature {
+	return newSignature(crypto.SHA512_256, key)
 }
 
-func NewHmacSHA384(key []byte) *xhash {
-	return &xhash{
-		h:      hmac.New(sha512.New384, key),
-		isHmac: true,
-	}
+func NewHmacSHA384(key []byte) *signature {
+	return newSignature(crypto.SHA384, key)
 }
 
-func NewHmacSHA512(key []byte) *xhash {
-	return &xhash{
-		h:      hmac.New(sha512.New, key),
-		isHmac: true,
-	}
+func NewHmacSHA512(key []byte) *signature {
+	return newSignature(crypto.SHA512, key)
 }

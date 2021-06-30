@@ -1,12 +1,12 @@
-package xcrypto
+package crypto
 
 import (
 	"crypto/cipher"
 	"errors"
 	"fmt"
 
-	"github.com/coredumptoday/goutils/xcrypto/internal"
-	"github.com/coredumptoday/goutils/xtype"
+	"github.com/coredumptoday/goutils/crypto/internal/model"
+	"github.com/coredumptoday/goutils/crypto/internal/stream"
 )
 
 var ErrPadIsNil = errors.New("xcrypto/cipher: padding processer is not set")
@@ -35,9 +35,9 @@ func (c *xCipher) ECB() *xCipher {
 	}
 
 	if c.isEncrypt {
-		c.model = internal.NewECBEncrypter(c.block)
+		c.model = model.NewECBEncrypter(c.block)
 	} else {
-		c.model = internal.NewECBDecrypter(c.block)
+		c.model = model.NewECBDecrypter(c.block)
 	}
 	c.isModel = true
 
@@ -106,9 +106,9 @@ func (c *xCipher) CFB8(iv []byte) *xCipher {
 	}
 
 	if c.isEncrypt {
-		c.stream = internal.NewCFB8Encrypter(c.block, iv)
+		c.stream = stream.NewCFB8Encrypter(c.block, iv)
 	} else {
-		c.stream = internal.NewCFBDecrypter(c.block, iv)
+		c.stream = stream.NewCFBDecrypter(c.block, iv)
 	}
 	c.isModel = false
 
@@ -123,7 +123,7 @@ func (c *xCipher) SetPadding(p padding) *xCipher {
 	return c
 }
 
-func (c *xCipher) Do(data []byte) (xtype.XBS, error) {
+func (c *xCipher) Do(data []byte) ([]byte, error) {
 	if c.err != nil {
 		return nil, c.err
 	}

@@ -1,8 +1,10 @@
-package xcrypto
+package crypto
 
 import (
 	"fmt"
 	"testing"
+
+	"github.com/coredumptoday/goutils/bytes"
 )
 
 var desKey = []byte("abcdabcdabcdabcd")
@@ -15,16 +17,14 @@ func TestDesECB(t *testing.T) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(endata.HexEncode().ToString())
-	fmt.Println(endata.StdBase64Encode().ToString())
-	fmt.Println(endata.URLBase64Encode().ToString())
+	fmt.Println(bytes.Bytes(endata).HexEncode().ToString())
 
 	dd := NewDesDecipher(desKey)
 	origin, err := dd.ECB().SetPadding(PKCS5).Do(endata)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(origin.ToString())
+	fmt.Println(bytes.Bytes(origin).ToString())
 }
 
 func TestDesCBC(t *testing.T) {
@@ -33,16 +33,14 @@ func TestDesCBC(t *testing.T) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(endata.HexEncode().ToString())
-	fmt.Println(endata.StdBase64Encode().ToString())
-	fmt.Println(endata.URLBase64Encode().ToString())
+	fmt.Println(bytes.Bytes(endata).HexEncode().ToString())
 
 	dd := NewDesDecipher(desKey)
 	origin, err := dd.CBC(desIv).SetPadding(PKCS5).Do(endata)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(origin.ToString())
+	fmt.Println(bytes.Bytes(origin).ToString())
 }
 
 func TestDesCTR(t *testing.T) {
@@ -51,16 +49,14 @@ func TestDesCTR(t *testing.T) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(endata.HexEncode().ToString())
-	fmt.Println(endata.StdBase64Encode().ToString())
-	fmt.Println(endata.URLBase64Encode().ToString())
+	fmt.Println(bytes.Bytes(endata).HexEncode().ToString())
 
 	dd := NewDesDecipher(desKey)
 	origin, err := dd.CTR(desIv).Do(endata)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(origin.ToString())
+	fmt.Println(bytes.Bytes(origin).ToString())
 }
 
 func TestDesOFB(t *testing.T) {
@@ -69,16 +65,14 @@ func TestDesOFB(t *testing.T) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(endata.HexEncode().ToString())
-	fmt.Println(endata.StdBase64Encode().ToString())
-	fmt.Println(endata.URLBase64Encode().ToString())
+	fmt.Println(bytes.Bytes(endata).HexEncode().ToString())
 
 	dd := NewDesDecipher(desKey)
 	origin, err := dd.OFB(desIv).Do(endata)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(origin.ToString())
+	fmt.Println(bytes.Bytes(origin).ToString())
 }
 
 func TestDesCFB(t *testing.T) {
@@ -87,14 +81,12 @@ func TestDesCFB(t *testing.T) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(endata.HexEncode().ToString())
-	fmt.Println(endata.StdBase64Encode().ToString())
-	fmt.Println(endata.URLBase64Encode().ToString())
+	fmt.Println(bytes.Bytes(endata).HexEncode().ToString())
 
 	dd := NewDesDecipher(desKey)
 	origin, err := dd.CFB(desIv).Do(endata)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(origin.ToString())
+	fmt.Println(bytes.Bytes(origin).ToString())
 }

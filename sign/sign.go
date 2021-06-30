@@ -35,48 +35,12 @@ func NewHmacBuilderWithQuery(ht crypto.Hash, key []byte, q url.Values) *builder 
 
 func newHmacBuilder(ht crypto.Hash, key []byte) *builder {
 	b := newBaseBuilder()
-
-	switch ht {
-	case crypto.MD5:
-		b.h = NewHmacMD5(key)
-	case crypto.SHA1:
-		b.h = NewHmacSHA1(key)
-	case crypto.SHA224:
-		b.h = NewHmacSHA256_224(key)
-	case crypto.SHA256:
-		b.h = NewHmacSHA256(key)
-	case crypto.SHA512_224:
-		b.h = NewHmacSHA512_224(key)
-	case crypto.SHA512_256:
-		b.h = NewHmacSHA512_256(key)
-	case crypto.SHA384:
-		b.h = NewHmacSHA384(key)
-	case crypto.SHA512:
-		b.h = NewHmacSHA512(key)
-	}
+	b.h = newSignature(ht, key)
 	return b
 }
 
 func newMdBuilder(ht crypto.Hash) *builder {
 	b := newBaseBuilder()
-
-	switch ht {
-	case crypto.MD5:
-		b.h = NewMD5()
-	case crypto.SHA1:
-		b.h = NewSHA1()
-	case crypto.SHA224:
-		b.h = NewSHA256_224()
-	case crypto.SHA256:
-		b.h = NewSHA256()
-	case crypto.SHA512_224:
-		b.h = NewSHA512_224()
-	case crypto.SHA512_256:
-		b.h = NewSHA512_256()
-	case crypto.SHA384:
-		b.h = NewSHA384()
-	case crypto.SHA512:
-		b.h = NewSHA512()
-	}
+	b.h = newSignature(ht, nil)
 	return b
 }

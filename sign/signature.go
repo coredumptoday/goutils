@@ -1,25 +1,37 @@
 package sign
 
 import (
+	"crypto"
 	"crypto/hmac"
 	"encoding/hex"
 	"hash"
 	"reflect"
-
-	"github.com/coredumptoday/goutils/xtype"
 )
 
-type xhash struct {
+func newSignature(h crypto.Hash, key []byte) *signature {
+	if key == nil {
+		return &signature{
+			h: h.New(),
+		}
+	} else { //hmac
+		return &signature{
+			h:      hmac.New(h.New, key),
+			isHmac: true,
+		}
+	}
+}
+
+type signature struct {
 	h      hash.Hash
 	err    error
 	isHmac bool
 }
 
-func (xh *xhash) Err() error {
+func (xh *signature) Err() error {
 	return xh.err
 }
 
-func (xh *xhash) WriteBytes(d []byte) int {
+func (xh *signature) WriteBytes(d []byte) int {
 	if xh.err != nil {
 		return 0
 	}
@@ -29,7 +41,7 @@ func (xh *xhash) WriteBytes(d []byte) int {
 	return n
 }
 
-func (xh *xhash) WriteString(d string) int {
+func (xh *signature) WriteString(d string) int {
 	if xh.err != nil {
 		return 0
 	}
@@ -39,7 +51,7 @@ func (xh *xhash) WriteString(d string) int {
 	return n
 }
 
-func (xh *xhash) Sum() (xtype.XBS, error) {
+func (xh *signature) Sum() ([]byte, error) {
 	if xh.err != nil {
 		return nil, xh.err
 	}
@@ -47,7 +59,7 @@ func (xh *xhash) Sum() (xtype.XBS, error) {
 	return xh.h.Sum(nil), xh.err
 }
 
-func (xh *xhash) decodeHexString(str string) []byte {
+func (xh *signature) decodeHexString(str string) []byte {
 	if xh.err != nil {
 		return nil
 	}
@@ -57,7 +69,7 @@ func (xh *xhash) decodeHexString(str string) []byte {
 	return b
 }
 
-func (xh *xhash) EqualHexString(str string) (bool, error) {
+func (xh *signature) EqualHexString(str string) (bool, error) {
 	targetSum := xh.decodeHexString(str)
 	selfSum, _ := xh.Sum()
 	if xh.err != nil {

@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/url"
 	"testing"
+
+	"github.com/coredumptoday/goutils/bytes"
 )
 
 //多次拼接数据进行hash计算
@@ -21,7 +23,17 @@ func TestSHA1Sign(t *testing.T) {
 		fmt.Println(err)
 	}
 
-	fmt.Println(sha1Sum.HexEncode().ToString()) //sha1(abcdefhigklm)
+	fmt.Println(bytes.Bytes(sha1Sum).HexEncode().ToString()) //sha1(abcdefhigklm)
+
+	h.WriteString("123456")
+
+	sha1Sum, err = h.Sum()
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println(bytes.Bytes(sha1Sum).HexEncode().ToString()) //sha1(abcdefhigklm123456)
 }
 
 /**
@@ -43,7 +55,7 @@ func TestMD5SignFromQuery(t *testing.T) {
 		fmt.Println(err)
 	}
 
-	fmt.Println(md5Sum.HexEncode().ToString())
+	fmt.Println(bytes.Bytes(md5Sum).HexEncode().ToString())
 }
 
 /**
@@ -69,5 +81,5 @@ func TestMD5SignFromMap(t *testing.T) {
 		fmt.Println(err)
 	}
 
-	fmt.Println(md5Sum.HexEncode().ToString())
+	fmt.Println(bytes.Bytes(md5Sum).HexEncode().ToString())
 }

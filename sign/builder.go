@@ -3,8 +3,6 @@ package sign
 import (
 	"net/url"
 	"sort"
-
-	"github.com/coredumptoday/goutils/xtype"
 )
 
 const extendKeyDefaultCap = 5
@@ -17,7 +15,7 @@ func newBaseBuilder() *builder {
 }
 
 type builder struct {
-	h            *xhash
+	h            *signature
 	ks           []string
 	mData        map[string]string
 	qData        url.Values
@@ -172,7 +170,7 @@ func (b *builder) write() {
 	}
 }
 
-func (b *builder) Sign() (xtype.XBS, error) {
+func (b *builder) Sign() ([]byte, error) {
 	b.write()
 	return b.h.Sum()
 }
@@ -182,7 +180,7 @@ func (b *builder) EqualHexString(str string) (bool, error) {
 	return b.h.EqualHexString(str)
 }
 
-func (b *builder) SignWithPostfixStr(strs ...string) (xtype.XBS, error) {
+func (b *builder) SignWithPostfixStr(strs ...string) ([]byte, error) {
 	b.write()
 
 	for _, s := range strs {
@@ -192,7 +190,7 @@ func (b *builder) SignWithPostfixStr(strs ...string) (xtype.XBS, error) {
 	return b.h.Sum()
 }
 
-func (b *builder) SignWithPostfixByte(ba ...[]byte) (xtype.XBS, error) {
+func (b *builder) SignWithPostfixByte(ba ...[]byte) ([]byte, error) {
 	b.write()
 
 	for _, s := range ba {
