@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/coredumptoday/goutils/bytes"
+	_ "golang.org/x/crypto/sha3"
 )
 
 //多次拼接数据进行hash计算
@@ -34,6 +35,22 @@ func TestSHA1Sign(t *testing.T) {
 	}
 
 	fmt.Println(bytes.Bytes(sha1Sum).HexEncode().ToString()) //sha1(abcdefhigklm123456)
+}
+
+func TestSHA3Sign(t *testing.T) {
+	h := NewSignature(crypto.SHA3_512, nil)
+	h.WriteString("abc")
+	h.WriteString("def")
+	h.WriteString("hig")
+	h.WriteString("klm")
+
+	sha3Sum, err := h.Sum()
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println(bytes.Bytes(sha3Sum).HexEncode().ToString()) //sha1(abcdefhigklm)
 }
 
 /**

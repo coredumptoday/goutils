@@ -34,13 +34,9 @@ func NewHmacBuilderWithQuery(ht crypto.Hash, key []byte, q url.Values) *builder 
 }
 
 func newHmacBuilder(ht crypto.Hash, key []byte) *builder {
-	b := newBaseBuilder()
-	b.h = newSignature(ht, key)
-	return b
+	return newBaseBuilder(NewSignature(ht, key))
 }
 
 func newMdBuilder(ht crypto.Hash) *builder {
-	b := newBaseBuilder()
-	b.h = newSignature(ht, nil)
-	return b
+	return newBaseBuilder(NewSignature(ht, nil))
 }

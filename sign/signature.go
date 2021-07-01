@@ -8,7 +8,7 @@ import (
 	"reflect"
 )
 
-func newSignature(h crypto.Hash, key []byte) *signature {
+func NewSignature(h crypto.Hash, key []byte) *signature {
 	if key == nil {
 		return &signature{
 			h: h.New(),

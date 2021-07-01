@@ -7,10 +7,11 @@ import (
 
 const extendKeyDefaultCap = 5
 
-func newBaseBuilder() *builder {
+func newBaseBuilder(h *signature) *builder {
 	return &builder{
 		kvSep:    []byte("="),
 		paramSep: []byte("&"),
+		h:        h,
 	}
 }
 
