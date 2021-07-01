@@ -122,7 +122,7 @@ func (b *builder) SetParamSepStr(sep string) *builder {
 	return b
 }
 
-func (b *builder) SetKVParamByte(sep []byte) *builder {
+func (b *builder) SetParamSepByte(sep []byte) *builder {
 	b.paramSep = sep
 	return b
 }

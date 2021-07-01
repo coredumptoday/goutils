@@ -65,7 +65,7 @@ func TestMD5SignFromQuery(t *testing.T) {
 	builder := NewSignBuilderWithQuery(crypto.MD5, q)
 	builder.DESCSort()
 	builder.WritePrefixString("appkey")
-	builder.SetKVSepStr("=").SetKVParamByte([]byte("&"))
+	builder.SetKVSepStr("=").SetParamSepByte([]byte("&"))
 	md5Sum, err := builder.Sign()
 
 	if err != nil {
@@ -91,7 +91,7 @@ func TestMD5SignFromMap(t *testing.T) {
 	builder.Set("fff", "555")
 	builder.ASCSort()
 	builder.WritePrefixString("appkey")
-	builder.SetKVSepStr("=").SetKVParamByte([]byte("&"))
+	builder.SetKVSepStr("=").SetParamSepByte([]byte("&"))
 	md5Sum, err := builder.SignWithPostfixStr("appkey")
 
 	if err != nil {
