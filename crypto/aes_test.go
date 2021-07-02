@@ -75,6 +75,23 @@ func TestAesOFB(t *testing.T) {
 	fmt.Println(bytes.Bytes(origin).ToString())
 }
 
+func TestAesOFB8(t *testing.T) {
+	ae := NewAesEncipher(aesKey)
+
+	endata, err := ae.OFB8(aesIv).Do(aesData)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(bytes.Bytes(endata).HexEncode().ToString())
+
+	ad := NewAesDecipher(aesKey)
+	origin, err := ad.OFB8(aesIv).Do(endata)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(bytes.Bytes(origin).ToString())
+}
+
 func TestAesCFB(t *testing.T) {
 	ae := NewAesEncipher(aesKey)
 	endata, err := ae.CFB(aesIv).SetPadding(ZEROPADDING).Do(aesData)

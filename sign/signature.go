@@ -1,11 +1,11 @@
 package sign
 
 import (
+	"bytes"
 	"crypto"
 	"crypto/hmac"
 	"encoding/hex"
 	"hash"
-	"reflect"
 )
 
 func NewSignature(h crypto.Hash, key []byte) *signature {
@@ -79,5 +79,5 @@ func (xh *signature) EqualHexString(str string) (bool, error) {
 	if xh.isHmac {
 		return hmac.Equal(selfSum, targetSum), xh.err
 	}
-	return reflect.DeepEqual(selfSum, targetSum), xh.err
+	return bytes.Equal(selfSum, targetSum), xh.err
 }

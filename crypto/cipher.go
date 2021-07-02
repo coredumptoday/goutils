@@ -9,9 +9,9 @@ import (
 	"github.com/coredumptoday/goutils/crypto/internal/stream"
 )
 
-var ErrPadIsNil = errors.New("xcrypto/cipher: padding processer is not set")
-var ErrPadSetNo = errors.New("xcrypto/cipher: block model pad must not nopadding")
-var ErrModelErr = errors.New("xcrypto/cipher: crypto's model set fail")
+var ErrPadIsNil = errors.New("crypto/cipher: padding processer is not set")
+var ErrPadSetNo = errors.New("crypto/cipher: block model pad must not nopadding")
+var ErrModelErr = errors.New("crypto/cipher: crypto's model set fail")
 
 type xCipher struct {
 	block     cipher.Block
@@ -25,7 +25,7 @@ type xCipher struct {
 
 func (c *xCipher) checkIV(iv []byte) {
 	if len(iv) != c.block.BlockSize() {
-		c.err = fmt.Errorf("xcrypto/cipher: IV length must equal block size, blockSize length: %v bytes", c.block.BlockSize())
+		c.err = fmt.Errorf("crypto/cipher: IV length must equal block size, blockSize length: %v bytes", c.block.BlockSize())
 	}
 }
 
@@ -94,6 +94,18 @@ func (c *xCipher) OFB(iv []byte) *xCipher {
 	}
 
 	c.stream = cipher.NewOFB(c.block, iv)
+	c.isModel = false
+
+	return c
+}
+
+func (c *xCipher) OFB8(iv []byte) *xCipher {
+	c.checkIV(iv)
+	if c.err != nil {
+		return c
+	}
+
+	c.stream = stream.NewOFB8(c.block, iv)
 	c.isModel = false
 
 	return c

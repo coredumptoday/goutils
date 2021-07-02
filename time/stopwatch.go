@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-var idxOutOfRange = errors.New("goutils/xtime: GetDuration idx is out of range")
+var idxOutOfRange = errors.New("time/stopwatch: GetDuration idx is out of range")
 
 func IsIdxOutOfRangeErr(err error) bool {
 	return errors.Is(err, idxOutOfRange)

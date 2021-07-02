@@ -14,14 +14,14 @@ type cfb8 struct {
 
 func NewCFB8Encrypter(block cipher.Block, iv []byte) cipher.Stream {
 	if len(iv) != block.BlockSize() {
-		panic("xcrypto/cfb8.NewCFB8Encrypter: IV length must equal block size")
+		panic("crypto/cfb8.NewCFB8Encrypter: IV length must equal block size")
 	}
 	return newCFB8(block, iv, false)
 }
 
 func NewCFBDecrypter(block cipher.Block, iv []byte) cipher.Stream {
 	if len(iv) != block.BlockSize() {
-		panic("xcrypto/cfb8.NewCFB8Encrypter: IV length must equal block size")
+		panic("crypto/cfb8.NewCFB8Encrypter: IV length must equal block size")
 	}
 	return newCFB8(block, iv, true)
 }
