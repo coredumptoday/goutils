@@ -18,7 +18,7 @@ func TestSHA1Sign(t *testing.T) {
 	h.WriteString("hig")
 	h.WriteString("klm")
 
-	sha1Sum, err := h.Sum()
+	sha1Sum, err := h.Sum(nil)
 
 	if err != nil {
 		fmt.Println(err)
@@ -28,7 +28,7 @@ func TestSHA1Sign(t *testing.T) {
 
 	h.WriteString("123456")
 
-	sha1Sum, err = h.Sum()
+	sha1Sum, err = h.Sum(nil)
 
 	if err != nil {
 		fmt.Println(err)
@@ -44,7 +44,7 @@ func TestSHA3Sign(t *testing.T) {
 	h.WriteString("hig")
 	h.WriteString("klm")
 
-	sha3Sum, err := h.Sum()
+	sha3Sum, err := h.Sum(nil)
 
 	if err != nil {
 		fmt.Println(err)
@@ -66,7 +66,7 @@ func TestMD5SignFromQuery(t *testing.T) {
 	builder.DESCSort()
 	builder.WritePrefixString("appkey")
 	builder.SetKVSepStr("=").SetParamSepByte([]byte("&"))
-	md5Sum, err := builder.Sign()
+	md5Sum, err := builder.Sum(nil)
 
 	if err != nil {
 		fmt.Println(err)
@@ -92,7 +92,7 @@ func TestMD5SignFromMap(t *testing.T) {
 	builder.ASCSort()
 	builder.WritePrefixString("appkey")
 	builder.SetKVSepStr("=").SetParamSepByte([]byte("&"))
-	md5Sum, err := builder.SignWithPostfixStr("appkey")
+	md5Sum, err := builder.WritePostfixStrAndSum(nil, "appkey")
 
 	if err != nil {
 		fmt.Println(err)

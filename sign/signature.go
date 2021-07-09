@@ -36,27 +36,20 @@ func (xh *signature) WriteBytes(d []byte) int {
 		return 0
 	}
 
-	n, e := xh.h.Write(d)
-	xh.err = e
+	n, _ := xh.h.Write(d)
 	return n
 }
 
 func (xh *signature) WriteString(d string) int {
-	if xh.err != nil {
-		return 0
-	}
-
-	n, e := xh.h.Write([]byte(d))
-	xh.err = e
-	return n
+	return xh.WriteBytes([]byte(d))
 }
 
-func (xh *signature) Sum() ([]byte, error) {
+func (xh *signature) Sum(b []byte) ([]byte, error) {
 	if xh.err != nil {
 		return nil, xh.err
 	}
 
-	return xh.h.Sum(nil), xh.err
+	return xh.h.Sum(b), xh.err
 }
 
 func (xh *signature) decodeHexString(str string) []byte {
@@ -71,7 +64,7 @@ func (xh *signature) decodeHexString(str string) []byte {
 
 func (xh *signature) EqualHexString(str string) (bool, error) {
 	targetSum := xh.decodeHexString(str)
-	selfSum, _ := xh.Sum()
+	selfSum, _ := xh.Sum(nil)
 	if xh.err != nil {
 		return false, xh.err
 	}

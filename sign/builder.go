@@ -60,8 +60,8 @@ func (b *builder) get(k string) string {
 			return s
 		}
 	} else {
-		if s, ok := b.qData[k]; ok {
-			return s[0]
+		if _, ok := b.qData[k]; ok {
+			return b.qData.Get(k)
 		}
 	}
 	return b.exData[k]
@@ -171,9 +171,9 @@ func (b *builder) write() {
 	}
 }
 
-func (b *builder) Sign() ([]byte, error) {
+func (b *builder) Sum(bs []byte) ([]byte, error) {
 	b.write()
-	return b.h.Sum()
+	return b.h.Sum(bs)
 }
 
 func (b *builder) EqualHexString(str string) (bool, error) {
@@ -181,22 +181,22 @@ func (b *builder) EqualHexString(str string) (bool, error) {
 	return b.h.EqualHexString(str)
 }
 
-func (b *builder) SignWithPostfixStr(strs ...string) ([]byte, error) {
+func (b *builder) WritePostfixStrAndSum(bs []byte, pfs ...string) ([]byte, error) {
 	b.write()
 
-	for _, s := range strs {
+	for _, s := range pfs {
 		b.h.WriteString(s)
 	}
 
-	return b.h.Sum()
+	return b.h.Sum(bs)
 }
 
-func (b *builder) SignWithPostfixByte(ba ...[]byte) ([]byte, error) {
+func (b *builder) WritePostfixByteAndSum(bs []byte, pfb ...[]byte) ([]byte, error) {
 	b.write()
 
-	for _, s := range ba {
+	for _, s := range pfb {
 		b.h.WriteBytes(s)
 	}
 
-	return b.h.Sum()
+	return b.h.Sum(bs)
 }
