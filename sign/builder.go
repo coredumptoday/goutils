@@ -7,7 +7,7 @@ import (
 
 const extendKeyDefaultCap = 5
 
-func newBaseBuilder(h *signature) *builder {
+func newBaseBuilder(h *hashWrap) *builder {
 	return &builder{
 		kvSep:    []byte("="),
 		paramSep: []byte("&"),
@@ -16,7 +16,7 @@ func newBaseBuilder(h *signature) *builder {
 }
 
 type builder struct {
-	h            *signature
+	h            *hashWrap
 	ks           []string
 	mData        map[string]string
 	qData        url.Values

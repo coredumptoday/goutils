@@ -8,30 +8,30 @@ import (
 	"hash"
 )
 
-func NewSignature(h crypto.Hash, key []byte) *signature {
+func NewSignature(h crypto.Hash, key []byte) *hashWrap {
 	if key == nil {
-		return &signature{
+		return &hashWrap{
 			h: h.New(),
 		}
 	} else { //hmac
-		return &signature{
+		return &hashWrap{
 			h:      hmac.New(h.New, key),
 			isHmac: true,
 		}
 	}
 }
 
-type signature struct {
+type hashWrap struct {
 	h      hash.Hash
 	err    error
 	isHmac bool
 }
 
-func (xh *signature) Err() error {
+func (xh *hashWrap) Err() error {
 	return xh.err
 }
 
-func (xh *signature) WriteBytes(d []byte) int {
+func (xh *hashWrap) WriteBytes(d []byte) int {
 	if xh.err != nil {
 		return 0
 	}
@@ -40,11 +40,11 @@ func (xh *signature) WriteBytes(d []byte) int {
 	return n
 }
 
-func (xh *signature) WriteString(d string) int {
+func (xh *hashWrap) WriteString(d string) int {
 	return xh.WriteBytes([]byte(d))
 }
 
-func (xh *signature) Sum(b []byte) ([]byte, error) {
+func (xh *hashWrap) Sum(b []byte) ([]byte, error) {
 	if xh.err != nil {
 		return nil, xh.err
 	}
@@ -52,7 +52,7 @@ func (xh *signature) Sum(b []byte) ([]byte, error) {
 	return xh.h.Sum(b), xh.err
 }
 
-func (xh *signature) decodeHexString(str string) []byte {
+func (xh *hashWrap) decodeHexString(str string) []byte {
 	if xh.err != nil {
 		return nil
 	}
@@ -62,7 +62,7 @@ func (xh *signature) decodeHexString(str string) []byte {
 	return b
 }
 
-func (xh *signature) EqualHexString(str string) (bool, error) {
+func (xh *hashWrap) EqualHexString(str string) (bool, error) {
 	targetSum := xh.decodeHexString(str)
 	selfSum, _ := xh.Sum(nil)
 	if xh.err != nil {

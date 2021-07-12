@@ -60,6 +60,12 @@ func (x Bytes) HMAC(hn crypto.Hash, k []byte) Bytes {
 	return hm.Sum(nil)
 }
 
+func (x Bytes) DigestSum(hn crypto.Hash) Bytes {
+	md := hn.New()
+	md.Write(x)
+	return md.Sum(nil)
+}
+
 func (x Bytes) ToString() string {
 	return string(x)
 }
