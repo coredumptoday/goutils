@@ -8,6 +8,7 @@ import (
 	"crypto/sha1"
 	"crypto/sha256"
 	"crypto/sha512"
+	"crypto/subtle"
 	"encoding/base64"
 	"encoding/hex"
 )
@@ -116,4 +117,20 @@ func (x Bytes) URLBase64Decode() (Bytes, error) {
 	dst := make([]byte, base64.RawURLEncoding.DecodedLen(len(x)))
 	n, err := base64.RawURLEncoding.Decode(dst, x)
 	return dst[:n], err
+}
+
+func (x Bytes) EqualBytesWithConstantTime(target []byte) bool {
+	return subtle.ConstantTimeCompare(x, target) == 1
+}
+
+func (x Bytes) EqualStringWithConstantTime(target string) bool {
+	return x.EqualBytesWithConstantTime([]byte(target))
+}
+
+func (x Bytes) EqualBytes(target []byte) bool {
+	return bytes.Equal(x, target)
+}
+
+func (x Bytes) EqualString(target string) bool {
+	return bytes.Equal(x, []byte(target))
 }

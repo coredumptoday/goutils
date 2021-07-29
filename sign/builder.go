@@ -172,16 +172,13 @@ func (b *builder) write() {
 }
 
 func (b *builder) Sum(bs []byte) ([]byte, error) {
+	b.h.Reset()
 	b.write()
 	return b.h.Sum(bs)
 }
 
-func (b *builder) EqualHexString(str string) (bool, error) {
-	b.write()
-	return b.h.EqualHexString(str)
-}
-
 func (b *builder) WritePostfixStrAndSum(bs []byte, pfs ...string) ([]byte, error) {
+	b.h.Reset()
 	b.write()
 
 	for _, s := range pfs {
@@ -192,6 +189,7 @@ func (b *builder) WritePostfixStrAndSum(bs []byte, pfs ...string) ([]byte, error
 }
 
 func (b *builder) WritePostfixByteAndSum(bs []byte, pfb ...[]byte) ([]byte, error) {
+	b.h.Reset()
 	b.write()
 
 	for _, s := range pfb {

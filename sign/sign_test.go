@@ -100,3 +100,27 @@ func TestMD5SignFromMap(t *testing.T) {
 
 	fmt.Println(bytes.Bytes(md5Sum).HexEncode().ToString())
 }
+
+func TestMD5SignFromMapEqual(t *testing.T) {
+	m := map[string]string{
+		"aaa": "111",
+		"bbb": "222",
+		"ccc": "333",
+		"ddd": "444",
+	}
+
+	builder := NewSignBuilderWithMap(crypto.MD5, m)
+	builder.Set("fff", "555")
+	builder.ASCSort()
+	builder.WritePrefixString("appkey")
+	builder.SetKVSepStr("=").SetParamSepByte([]byte("&"))
+	md5Sum, err := builder.WritePostfixStrAndSum(nil, "appkey")
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println(bytes.Bytes(md5Sum).HexEncode().ToString())
+	fmt.Println(bytes.Bytes(md5Sum).EqualBytesWithConstantTime(md5Sum))
+	fmt.Println(bytes.Bytes(md5Sum).EqualBytes(md5Sum))
+}

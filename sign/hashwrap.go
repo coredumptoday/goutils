@@ -1,10 +1,8 @@
 package sign
 
 import (
-	"bytes"
 	"crypto"
 	"crypto/hmac"
-	"encoding/hex"
 	"hash"
 )
 
@@ -25,6 +23,13 @@ type hashWrap struct {
 	h      hash.Hash
 	err    error
 	isHmac bool
+}
+
+func (xh *hashWrap) Reset() {
+	if xh.err != nil {
+		return
+	}
+	xh.h.Reset()
 }
 
 func (xh *hashWrap) Err() error {
@@ -50,27 +55,4 @@ func (xh *hashWrap) Sum(b []byte) ([]byte, error) {
 	}
 
 	return xh.h.Sum(b), xh.err
-}
-
-func (xh *hashWrap) decodeHexString(str string) []byte {
-	if xh.err != nil {
-		return nil
-	}
-
-	b, err := hex.DecodeString(str)
-	xh.err = err
-	return b
-}
-
-func (xh *hashWrap) EqualHexString(str string) (bool, error) {
-	targetSum := xh.decodeHexString(str)
-	selfSum, _ := xh.Sum(nil)
-	if xh.err != nil {
-		return false, xh.err
-	}
-
-	if xh.isHmac {
-		return hmac.Equal(selfSum, targetSum), xh.err
-	}
-	return bytes.Equal(selfSum, targetSum), xh.err
 }
