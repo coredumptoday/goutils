@@ -13,7 +13,7 @@ func initRedisClient() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	redis.RegisterConnector("simpleClint", "", sc)
+	redis.RegisterConnector("simpleClint", "xxx_", sc)
 	err = redis.Connect()
 	if err != nil {
 		fmt.Println(err)
